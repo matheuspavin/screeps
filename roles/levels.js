@@ -1,14 +1,12 @@
-var level = function (lvl) {
+var levels = function (lvl) {
     
     const level1 = {
             builders : 5,
             harvesters : 3,
             upgraders : 2,
             maintainers : 1,
-            harvester : [WORK, CARRY, MOVE],
-            builder : [WORK, CARRY, MOVE],
-            upgrader : [WORK, CARRY, MOVE],
-            maintainer : [WORK, CARRY, MOVE]
+            energy: 300,
+            basicProperties : [WORK, CARRY, MOVE],
     };
     
     const level2 = {
@@ -16,10 +14,8 @@ var level = function (lvl) {
             harvesters : level1.harvesters * lvl,
             upgraders : level1.upgraders * lvl,
             maintainers : level1.maintainers * lvl,
-            harvester : [WORK, WORK, WORK, CARRY, CARRY, MOVE],
-            builder : [WORK, WORK, WORK, CARRY, CARRY, MOVE],
-            upgrader : [WORK, WORK, WORK, CARRY, CARRY, MOVE],
-            maintainer : [WORK, WORK, WORK, CARRY, CARRY, MOVE]
+            energy: 550,
+            basicProperties : [WORK, WORK, WORK, CARRY, CARRY, MOVE],
     };
     
     if (lvl = 1) {
@@ -36,13 +32,11 @@ var level = function (lvl) {
                  harvesters : level2.builders,
                  upgraders : level2.upgraders,
                  maintainers : level2.maintainers,
-                 harvester : level2.harvester.push(WORK, CARRY, MOVE),
-                 builder : level2.builder.push(WORK, CARRY, MOVE),
-                 upgrader : level2.upgrader.push(WORK, CARRY, MOVE),
-                 maintainer : level2.maintainer.push(WORK, CARRY, MOVE)
+                 energy: level2.energy + 150,
+                 basicProperties : level2.basicProperties.push(WORK, CARRY, MOVE),
         }
     };
 }
 module.exports = {
-        level
+        levels
 };

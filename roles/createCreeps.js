@@ -2,7 +2,6 @@ var levels =  require('levels');
 
 
 var creepsMap = new Map();
-var phase = Game.phase;
 var gameLevelCreep = levels.levels(Game.gcl.level);
 
 var createCreeps =  {
@@ -49,10 +48,17 @@ var createCreep = function (roleCreep) {
 };
 
 var defineCreepToCreate = function () {
-    if (countCreeps(Game.creeps, 'harvester') < Game.gcl.level + 1) { return 'harvester';}
-    if (countCreeps(Game.creeps, 'builder') < (Game.gcl.level * 2 )) { return 'builder';}
-    if (countCreeps(Game.creeps, 'upgrader') < (Game.gcl.level * 2 )) { return 'upgrader';}
-    if (countCreeps(Game.creeps, 'maintenance') < Game.gcl.level) { return ('maintenance');}
+    var gameSize = 1;
+    if ((_.size(Game.creeps) % 6) === 0) {
+        if (Game.gcl.level != 1 && Game.creeps >= 12) {
+            gameSize = _.size(Game.creeps)
+            console.log(gameSize);
+        }
+    }
+    if (countCreeps(Game.creeps, 'harvester') < Game.gcl.level + 1 * gameSize) { return 'harvester';}
+    if (countCreeps(Game.creeps, 'builder') < (Game.gcl.level * 2 * gameSize)) { return 'builder';}
+    if (countCreeps(Game.creeps, 'upgrader') < (Game.gcl.level * 2 * gameSize)) { return 'upgrader';}
+    if (countCreeps(Game.creeps, 'maintenance') < Game.gcl.level * gameSize) { return ('maintenance');}
     // if (creepsMap.get('warrior') <= (phase - 1) && Game.gcl.level < 4) {return 'warrior';}    
     // }
     
