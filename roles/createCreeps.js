@@ -1,13 +1,9 @@
-var creepsMap = new Map();
-var phase = 1;
-const level1 = {
-    builders : 5,
-    harvesters : 3,
-    upgraders : 2,
-    maintenance : 1,
-    basicCreep : [WORK, CARRY, MOVE]
-}
+var levels =  require('levels');
 
+
+var creepsMap = new Map();
+var phase = Game.phase;
+var gameLevelCreep = levels(Game.gcl.level);
 
 var createCreeps =  {
     run: function(creeps) {
@@ -28,12 +24,9 @@ var createCreeps =  {
         let builders = countCreeps(creeps, 'builder');
         let upgraders = countCreeps(creeps, 'upgrader');
         let healers = countCreeps(creeps, 'healer');
-        if (builders <= (5 * Game.gcl.level) && Game.spawns['Spawn1'].energy >= 300) {
-           createCreep('builder', builders);
-        }
-        if (upgraders <= (2 * Game.gcl.level) && Game.spawns['Spawn1'].energy >= 300) {
-           createCreep('upgrader', upgraders);
-        } 
+        
+        console.log(gameLevelCreep.energy);
+        if (gameLevelCreep.energy >= Game.spawns['Spawn1'].energy) {createCreep(defineCreepToCreate());}
     }
 };
 
@@ -50,16 +43,15 @@ var sayHowMuchCreeps = function (creeps, roleCreepsMap) {
     });
 };
 
-var createCreep = function (roleCreep, quantity) {
+var createCreep = function (roleCreep) {
     console.log('Spawning one' + roleCreep + '...');
-    Game.spawns['Spawn1'].spawnCreep( [WORK, CARRY, MOVE], roleCreep + (Game.time), { memory: { role: roleCreep, level: 1 } } );
+    Game.spawns['Spawn1'].spawnCreep( gameLevelCreep.roleCreep, roleCreep + (Game.time), { memory: { role: roleCreep, level: 1 } } );
     sayHowMuchCreeps(Game.creeps, creepsMap);
 };
 
-var defineCreepToCreate () {
-    let level = 'level'+Game.gcl.level
+var defineCreepToCreate = function () {
     console.log ('we are on phase + ' + phase);
-    if (creepsMap.get('harvester') <= (phase - 1) &&  { return 'harvester';}
+    if (creepsMap.get('harvester') <= (phase - 1))  { return 'harvester';}
     if (creepsMap.get('builder') <= (phase)) {return 'builder';}
     if (creepsMap.get('upgrader') <= (phase)) {
         if (phase === 1) {
