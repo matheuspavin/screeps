@@ -2,8 +2,8 @@ var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-
-	    if(creep.memory.building && creep.carry.energy == 0) {
+        
+        if(creep.memory.building && creep.carry.energy == 0) {
             creep.memory.building = false;
             creep.say('🔄 harvest');
 	    }
@@ -14,8 +14,16 @@ var roleBuilder = {
 
 	    if(creep.memory.building) {
 	        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+	        var extension = _.filter(targets, (target) => target.structureType == 'extension');
+	        console.log(extension.length);
             if(targets.length) {
-                if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+                if (extension.length) {
+                    if(creep.build(extension[0]) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(extension[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+                } else if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+                    console.log('entrou');
+                    console.log(targets[0].structureType)
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
