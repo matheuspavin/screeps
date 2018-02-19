@@ -1,3 +1,4 @@
+var structures = require('structures');
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
@@ -17,11 +18,13 @@ var roleUpgrader = {
             }
         }
         else {
-           var target = creep.pos.findClosestByRange(FIND_STRUCTURES,
+           var storages = creep.pos.find(FIND_STRUCTURES,
                 {filter: {structureType: STRUCTURE_CONTAINER}});
-            if (target.length)
-                if(creep.harvest(target[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target[0], {visualizePathStyle: {stroke: '#ffaa00'}});
+           if(storages > 0) {
+                let storage = storages.sort((a, b) => a - b)
+                if(creep.withdraw(storage[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(storage[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                } 
             }
         }
 	}

@@ -6,6 +6,7 @@ var levels = function (lvl) {
             upgraders : 2,
             maintainers : 1,
             energy: 300,
+            maxCreeps : 20,
             basicProperties : [WORK, CARRY, MOVE],
     };
     
@@ -14,6 +15,7 @@ var levels = function (lvl) {
             harvesters : level1.harvesters * lvl,
             upgraders : level1.upgraders * lvl,
             maintainers : level1.maintainers * lvl,
+            maxCreeps : 40,
             energy: 550,
             basicProperties : [WORK, WORK, WORK, CARRY, CARRY, MOVE],
     };
@@ -32,6 +34,7 @@ var levels = function (lvl) {
                  harvesters : level2.builders,
                  upgraders : level2.upgraders,
                  maintainers : level2.maintainers,
+                 maxCreeps : (40 + 2 * lvl),
                  energy: level2.energy + 150,
                  basicProperties : level2.basicProperties.push(WORK, CARRY, MOVE),
         }
