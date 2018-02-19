@@ -9,13 +9,9 @@ var findContainer = () => {
 };
 
 var transferContainerEnergy = function (container, askCreep) {
-    var findAndTransferToCreep = container.pos.find(FIND_CREEPS, {
-         filter: (creep) => {
-                        return (creep.id == askCreep.id );
-                    }
-    });
+    console.log("transferContainerEnergy")
+    return container.transfer(askCreep, RESOURCE_ENERGY);
 }
-    container.transfer(findAndTransferToCreep, RESOURCE_ENERGY);
 
 
 module.exports = {

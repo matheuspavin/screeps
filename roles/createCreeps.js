@@ -23,10 +23,19 @@ var createCreeps =  {
         let builders = countCreeps(creeps, 'builder');
         let upgraders = countCreeps(creeps, 'upgrader');
         let healers = countCreeps(creeps, 'healer');
-        if (Game.spawns['Spawn1'].energy >= gameLevelCreep.energy) {!createCreep(defineCreepToCreate());}
+        if (Game.spawns['Spawn1'].energy >= 300) {!createCreep(defineCreepToCreate());}
     }
 };
 
+
+//Check if i have energy to build the better creep
+var energyLevel = function () {
+    if (Game.spawns['Spawn1'].energyCapacity >= gameLevelCreep.energy) {
+        return 'advanced';
+    } else {
+        return 'basic';
+    }
+};
 
 var countCreeps = function (creeps, role) {
     let quantity = _.filter(creeps, (creep) => creep.memory.role == role);
@@ -41,9 +50,17 @@ var sayHowMuchCreeps = function (creeps, roleCreepsMap) {
 };
 
 var createCreep = function (roleCreep) {
+    let creepProperties
+    if(energyLevel() === 'advanced' && Game.spawns['Spawn1'].energyCapacity > Game.spawns['Spawn1'].energy) {
+        return;
+    } else if (energyLevel() === 'basic') {
+        creepProperties = gameLevelCreep.basicProperties;
+    } else {
+        creepProperties = gameLevelCreep.advancedProperties;
+    }
     if (!roleCreep) return;
-    console.log('Spawning one ' + roleCreep + '...');
-    let creepProperties = (roleCreep != 'warrior' ? gameLevelCreep.basicProperties : gameLevelCreep.warriorProperties);
+    console.log('Spawning one ' + roleCreep + '...' + energyLevel());
+    // let creepProperties = (roleCreep != 'warrior' ? gameLevelCreep.basicProperties : gameLevelCreep.warriorProperties);
     Game.spawns['Spawn1'].spawnCreep( creepProperties, roleCreep + (Game.time), { memory: { role: roleCreep, level: 1 } } );
     sayHowMuchCreeps(Game.creeps, creepsMap);
 };

@@ -15,9 +15,10 @@ var levels = function (lvl) {
             harvesters : level1.harvesters * lvl,
             upgraders : level1.upgraders * lvl,
             maintainers : level1.maintainers * lvl,
-            maxCreeps : 40,
+            maxCreeps : 30,
             energy: 550,
-            basicProperties : [WORK, WORK, WORK, CARRY, CARRY, MOVE],
+            basicProperties : [WORK, CARRY, MOVE],
+            advancedProperties : [WORK, WORK, WORK, CARRY, CARRY, MOVE],
     };
     
     if (lvl = 1) {
@@ -34,9 +35,10 @@ var levels = function (lvl) {
                  harvesters : level2.builders,
                  upgraders : level2.upgraders,
                  maintainers : level2.maintainers,
-                 maxCreeps : (40 + 2 * lvl),
+                 maxCreeps : level2.maxCreeps + 10,
                  energy: level2.energy + 150,
-                 basicProperties : level2.basicProperties.push(WORK, CARRY, MOVE),
+                 basicProperties : [WORK, CARRY, MOVE],
+                 advancedProperties : level2.advancedProperties.push(WORK, CARRY, MOVE),
         }
     };
 };
@@ -46,5 +48,6 @@ var getControllerLevel = () => {
        return structures[0].level;
 };
 module.exports = {
-        levels
+        levels = levels,
+        getControllerLevel = getControllerLevel
 };
