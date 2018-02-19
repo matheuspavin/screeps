@@ -7,7 +7,6 @@ var gameLevelCreep = levels.levels(Game.gcl.level);
 
 var createCreeps =  {
     run: function(creeps) {
-    console.log(Room);
         for(var name in Memory.creeps) {
             if(!Game.creeps[name]) {
                 delete Memory.creeps[name];
@@ -57,19 +56,32 @@ var defineCreepToCreate = function () {
     //     }
     // }
     
-    if (Game.gcl.level === 1 && 12 < _.size(Game.creeps) > 6 ) {
-        gameSize = 2;
-    } else if (Game.gcl.level === 1 && 18 < _.size(Game.creeps) > 12 ) {
-        gameSize = 3;
-    } else if (Game.gcl.level === 1 && 24 < _.size(Game.creeps) > 18 ) {
-        gameSize = 4;
-    } else if (Game.gcl.level === 1 && 30 < _.size(Game.creeps) > 24 ) {
-        gameSize = 5;
-    } 
-    if (countCreeps(Game.creeps, 'harvester') < Game.gcl.level + 2 * gameSize ) { return 'harvester';}
-    if (countCreeps(Game.creeps, 'builder') < Game.gcl.level * 4 * gameSize) { return 'builder';}
-    if (countCreeps(Game.creeps, 'upgrader') < Game.gcl.level * 4 * gameSize) { return 'upgrader';}
-    if (countCreeps(Game.creeps, 'maintenance') < Game.gcl.level + 1 * gameSize) { return 'maintenance';}
+    if ( Game.spawns['Spawn1'].energy === 300) {
+        if (countCreeps(Game.creeps, 'harvester') < 3) { 
+            return 'harvester';
+        } else {
+            return 'builder'; 
+        }
+    }
+    if (Game.gcl.level === 1){
+        
+        if (((26 * Game.gcl.level) > _.size(Game.creeps)) && (_.size(Game.creeps) >= 13)) {
+            gameSize = 1 + Game.gcl.level;
+        } else if (((39 * Game.gcl.level) > _.size(Game.creeps)) && (_.size(Game.creeps) >= 26)) {
+            gameSize = 2 + Game.gcl.level;
+        } else if (((52 * Game.gcl.level) > _.size(Game.creeps)) && (_.size(Game.creeps) >= 39)) {
+            gameSize = 3 + Game.gcl.level;
+        } else if (((65 * Game.gcl.level) > _.size(Game.creeps)) && (_.size(Game.creeps) >= 52)) {
+            gameSize = 4 + Game.gcl.level;
+        }  else {
+            gameSize = 1;
+        }
+        
+    }
+    if (countCreeps(Game.creeps, 'harvester') < ((Game.gcl.level + 2) * gameSize)) { return 'harvester';}
+    if (countCreeps(Game.creeps, 'builder') < ((Game.gcl.level * 4) * gameSize)) { return 'builder';}
+    if (countCreeps(Game.creeps, 'upgrader') < ((Game.gcl.level * 4) * gameSize)) { return 'upgrader';}
+    if (countCreeps(Game.creeps, 'maintenance') < ((Game.gcl.level + 1) * gameSize)) { return 'maintenance';}
     // if (creepsMap.get('warrior') <= (phase - 1) && Game.gcl.level < 4) {return 'warrior';}    
     // }
     
