@@ -2,11 +2,12 @@ var levels =  require('levels');
 
 
 var creepsMap = new Map();
+// var lvl = Room;
 var gameLevelCreep = levels.levels(Game.gcl.level);
 
 var createCreeps =  {
     run: function(creeps) {
-
+    console.log(Room);
         for(var name in Memory.creeps) {
             if(!Game.creeps[name]) {
                 delete Memory.creeps[name];
@@ -49,16 +50,26 @@ var createCreep = function (roleCreep) {
 
 var defineCreepToCreate = function () {
     var gameSize = 1;
-    if ((_.size(Game.creeps) % 6) === 0) {
-        if (Game.gcl.level != 1 && Game.creeps >= 12) {
-            gameSize = _.size(Game.creeps)
-            console.log(gameSize);
-        }
-    }
-    if (countCreeps(Game.creeps, 'harvester') < Game.gcl.level + 1 * gameSize) { return 'harvester';}
-    if (countCreeps(Game.creeps, 'builder') < (Game.gcl.level * 2 * gameSize)) { return 'builder';}
-    if (countCreeps(Game.creeps, 'upgrader') < (Game.gcl.level * 2 * gameSize)) { return 'upgrader';}
-    if (countCreeps(Game.creeps, 'maintenance') < Game.gcl.level * gameSize) { return ('maintenance');}
+    // if ((_.size(Game.creeps) % 6) === 0) {
+    //     if (Game.gcl.level != 1 && Game.creeps >= 12) {
+    //         gameSize = _.size(Game.creeps)
+    //         console.log(gameSize);
+    //     }
+    // }
+    
+    if (Game.gcl.level === 1 && 12 < _.size(Game.creeps) > 6 ) {
+        gameSize = 2;
+    } else if (Game.gcl.level === 1 && 18 < _.size(Game.creeps) > 12 ) {
+        gameSize = 3;
+    } else if (Game.gcl.level === 1 && 24 < _.size(Game.creeps) > 18 ) {
+        gameSize = 4;
+    } else if (Game.gcl.level === 1 && 30 < _.size(Game.creeps) > 24 ) {
+        gameSize = 5;
+    } 
+    if (countCreeps(Game.creeps, 'harvester') < Game.gcl.level + 2 * gameSize ) { return 'harvester';}
+    if (countCreeps(Game.creeps, 'builder') < Game.gcl.level * 4 * gameSize) { return 'builder';}
+    if (countCreeps(Game.creeps, 'upgrader') < Game.gcl.level * 4 * gameSize) { return 'upgrader';}
+    if (countCreeps(Game.creeps, 'maintenance') < Game.gcl.level + 1 * gameSize) { return 'maintenance';}
     // if (creepsMap.get('warrior') <= (phase - 1) && Game.gcl.level < 4) {return 'warrior';}    
     // }
     
