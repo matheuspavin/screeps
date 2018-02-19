@@ -4,10 +4,6 @@ var roleBuilder = require('role.builder');
 var roleCreateCreeps = require('role.createCreeps');
 
 module.exports.loop = function () {
-    
-    if (!Game.phase) {
-        Game.phase = 1;
-    }
     roleCreateCreeps.run(Game.creeps);
 
     var tower = Game.getObjectById('b4f259a4d6ce642615464b3e');

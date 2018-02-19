@@ -36,7 +36,12 @@ var levels = function (lvl) {
                  basicProperties : level2.basicProperties.push(WORK, CARRY, MOVE),
         }
     };
-}
+};
+
+var getControllerLevel = () => {
+    var structures = _.filter(Game.structures, (structure) => structure.structureType == 'controller');
+       return structures[0].level;
+};
 module.exports = {
         levels
 };
