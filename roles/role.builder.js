@@ -15,17 +15,13 @@ var roleBuilder = {
 	    if(creep.memory.building) {
 	        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 	        var extension = _.filter(targets, (target) => target.structureType == 'extension');
-	        console.log(extension.length);
-            if(targets.length) {
-                if (extension.length) {
-                    if(creep.build(extension[0]) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(extension[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                    }
-                } else if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-                    console.log('entrou');
-                    console.log(targets[0].structureType)
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                }
+	         var container = _.filter(targets, (target) => target.structureType == 'container');
+	        if(container.length) {
+	           buildStructure(container[0], creep);
+	        }else if (extension.length) {
+                buildStructure(extension[0], creep);
+	        }else if(targets.length) {
+                buildStructure(targets[0], creep);
             }
 	    }
 	    else {
@@ -36,5 +32,11 @@ var roleBuilder = {
 	    }
 	}
 };
+
+var buildStructure = function (target, creep) {
+    if (creep.build(target) == ERR_NOT_IN_RANGE) {
+        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+    }
+}
 
 module.exports = roleBuilder;
