@@ -56,7 +56,7 @@ var defineCreepToCreate = function () {
     //     }
     // }
     
-    if ( Game.spawns['Spawn1'].energy === 300) {
+    if ( Game.spawns['Spawn1'].energyCapacity === 300) {
         if (countCreeps(Game.creeps, 'harvester') < 3) { 
             return 'harvester';
         } else {
@@ -86,4 +86,5 @@ var defineCreepToCreate = function () {
     // }
     
 }
+
 module.exports =  createCreeps;
