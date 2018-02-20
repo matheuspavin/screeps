@@ -13,10 +13,12 @@ var createCreeps =  {
                 console.log('Clearing non-existing creep memory:', name);
             }
         }
+        
+    //I should think about kill creeps, just before the limit time, of each, is about to end. To save time.
 
         
         if (!Object.keys(creeps).length) {
-            Game.spawns['Spawn1'].spawnCreep( [WORK, CARRY, MOVE], 'Harvester1', { memory: { role: 'harvesterContainer', level: 1 } } );
+            Game.spawns['Spawn1'].spawnCreep( [WORK, CARRY, MOVE], 'Harvester1', { memory: { role: 'harvester', level: 1 } } );
         }
         
         let harvesters = countCreeps(creeps, 'harvester');
@@ -30,12 +32,32 @@ var createCreeps =  {
 
 //Check if i have energy to build the better creep
 var energyLevel = function () {
-    if (Game.spawns['Spawn1'].energyCapacity >= gameLevelCreep.energy) {
+    let energyCapacityAvailable;
+     for(var name in Game.rooms) {
+       energyCapacityAvailable = Game.rooms[name].energyCapacityAvailable;
+    }
+    if (energyCapacityAvailable >= gameLevelCreep.energy && gameLevelCreep.energy > 300) {
         return 'advanced';
     } else {
         return 'basic';
     }
 };
+
+var energyCapacity = function () {
+    let energy;
+    for(var name in Game.rooms) {
+       energy = Game.rooms[name].energyCapacityAvailable;
+    }
+    return energy;
+}
+
+var energyNow = function () {
+    let energy;
+    for(var name in Game.rooms) {
+       energy = Game.rooms[name].energyAvailable;
+    }
+    return energy;
+}
 
 var countCreeps = function (creeps, role) {
     let quantity = _.filter(creeps, (creep) => creep.memory.role == role);
@@ -51,12 +73,16 @@ var sayHowMuchCreeps = function (creeps, roleCreepsMap) {
 
 var createCreep = function (roleCreep) {
     let creepProperties
-    if(energyLevel() === 'advanced' && Game.spawns['Spawn1'].energyCapacity > Game.spawns['Spawn1'].energy) {
+    if(energyLevel() === 'advanced' && energyCapacity() > energyNow() && energyNow() < gameLevelCreep.energy) {
         return;
     } else if (energyLevel() === 'basic') {
         creepProperties = gameLevelCreep.basicProperties;
     } else {
-        creepProperties = gameLevelCreep.advancedProperties;
+        if (roleCreep === 'warrior'){
+            creepProperties = gameLevelCreep.warrior;
+        } else {
+            creepProperties = gameLevelCreep.advancedProperties;
+        }
     }
     if (!roleCreep) return;
     console.log('Spawning one ' + roleCreep + '...' + energyLevel());
@@ -69,12 +95,13 @@ var createCreep = function (roleCreep) {
 //It's a basic controller of creation 
 var defineCreepToCreate = function () {
     var gameSize = 1;
-    console.log(structuresService.findContainer());
     //this way I do not create a crowd, around the only starting resource.
-    if ( levels.getControllerLevel() === 1 && Game.spawns['Spawn1'].energyCapacity === 300 && _.size(Game.creeps) < 6) {
+    if ( levels.getControllerLevel() === 1 && Game.spawns['Spawn1'].energyCapacity === 300 && _.size(Game.creeps) < 8) {
         if (countCreeps(Game.creeps, 'harvester') <= 1) { 
             return 'harvester';
-        } else {
+        } else if (countCreeps(Game.creeps, 'upgrader') <= 1) {
+            return 'upgrader';
+        }else {
             return 'builder'; 
         }
     } else if (structuresService.findContainer().length && _.size(Game.creeps) < gameLevelCreep.maxCreeps) {
@@ -90,13 +117,29 @@ var defineCreepToCreate = function () {
         }  else {
             gameSize = 1;
         }
-        if (countCreeps(Game.creeps, 'harvester') < (2 * gameSize)) { return 'harvester';}
-        if (countCreeps(Game.creeps, 'harvesterContainer') < (5 * gameSize)) { return 'harvesterContainer';}
-        if (countCreeps(Game.creeps, 'upgrader') < (5 * gameSize)) { return 'upgrader';}
-        if (countCreeps(Game.creeps, 'builder') < (5 * gameSize)) { return 'builder';}
-        if (countCreeps(Game.creeps, 'maintenance') < (1 * gameSize)) { return 'maintenance';}
-        // if (creepsMap.get('warrior') <= (phase - 1) && Game.gcl.level < 4) {return 'warrior';}    
-        // }
+        
+        //I have to create, after having the first container, some harvester specific for that, and some upgrader.
+        // if (countCreeps(Game.creeps, 'repairer') < (1)) { return 'repairer';}
+        // if (countCreeps(Game.creeps, 'harvesterContainer') < 2) { return 'harvesterContainer';}
+        //  if (countCreeps(Game.creeps, 'builder') < 1) { return 'builder';}
+        
+        // Continue to create (first round)
+        if (countCreeps(Game.creeps, 'repairer') < 1) { return 'repairer';}
+        if (countCreeps(Game.creeps, 'warrior') < 1) { return 'warrior';}
+        if (countCreeps(Game.creeps, 'harvester') <= 2) { return 'harvester';}
+        if (countCreeps(Game.creeps, 'harvesterContainer') <= 3) { return 'harvesterContainer';}
+        if (countCreeps(Game.creeps, 'builder') <= 1) { return 'builder';}
+        if (countCreeps(Game.creeps, 'upgrader') <= 2) { return 'upgrader';}
+        if (countCreeps(Game.creeps, 'harvesterContainer') <= 2) { return 'harvesterContainer';}
+        if (countCreeps(Game.creeps, 'upgrader') <= 2) { return 'upgrader';}
+
+        
+        // Continue to create (second round)
+        if (countCreeps(Game.creeps, 'harvesterContainer') < (3* gameSize)) { return 'harvesterContainer';}
+        if (countCreeps(Game.creeps, 'upgrader') < (3 * gameSize)) { return 'upgrader';}
+        if (countCreeps(Game.creeps, 'builder') < (2 * gameSize)) { return 'builder';}
+        if (countCreeps(Game.creeps, 'repairer') < (1 * gameSize)) { return 'repairer';}
+        if (countCreeps(Game.creeps, 'warrior') < (1 * gameSize)) { return 'warrior';}
     } else {
         return;
     }
