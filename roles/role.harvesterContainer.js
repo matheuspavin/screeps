@@ -6,7 +6,7 @@ var roleHarvesterContainer = {
 	    if(creep.carry.energy < creep.carryCapacity) {
             let sourceToMine = 0;
             let sources = creep.room.find(FIND_SOURCES);
-            let quantity = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+            let quantity = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvesterContainer');
             quantity.indexOf(creep) < (quantity.length / 2) ? sourceToMine = 1 : sourceToMine = 0;
             if(creep.harvest(sources[sourceToMine]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[sourceToMine], {visualizePathStyle: {stroke: '#009999'}});
