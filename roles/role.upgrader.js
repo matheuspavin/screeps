@@ -1,4 +1,4 @@
-var structures = require('structures');
+var structureService = require('structureService');
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
@@ -17,12 +17,13 @@ var roleUpgrader = {
                 creep.moveTo(creep.room.controller, {visualizePathStyle: {stroke: '#e60000'}});
             }
         } else {
-            let targets = creep.room.find(FIND_STRUCTURES);
-	        let container = _.filter(targets, (target) => target.structureType == 'container');
-	        if (container.length) {
-	             if(creep.harvest(container[0]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sourcecontainers[0], {visualizePathStyle: {stroke: '#e60000'}});
-				}
+           var containers = creep.room.find(FIND_STRUCTURES, 
+                {filter: {structureType: STRUCTURE_CONTAINER}});
+                
+	        if (containers.length) {
+	            containers = sortContainersByLoadUpper(containers);
+                    creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#e60000'}});
+				    structureService.transferContainerEnergy(containers[0], creep);
 			} else {
     	        var sources = creep.room.find(FIND_SOURCES);
     	        if (sources.length){
@@ -34,5 +35,11 @@ var roleUpgrader = {
 	    }
 	}
 };
+
+
+var sortContainersByLoadUpper = function (containers) {
+    return containers.sort((a, b) =>  b.store[RESOURCE_ENERGY] - a.store[RESOURCE_ENERGY]);
+}
+
 
 module.exports = roleUpgrader;

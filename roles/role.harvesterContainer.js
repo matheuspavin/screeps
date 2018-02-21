@@ -1,5 +1,3 @@
-var structures = require('structures');
-
 var roleHarvesterContainer = {
 
     /** @param {Creep} creep **/
@@ -14,7 +12,9 @@ var roleHarvesterContainer = {
         else {
            var targets = creep.room.find(FIND_STRUCTURES, 
                 {filter: {structureType: STRUCTURE_CONTAINER}});
+                
             if(targets.length > 0) {
+                targets = sortContainersByLoad(targets);
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#009999'}});
                 }
@@ -22,5 +22,9 @@ var roleHarvesterContainer = {
         }
 	}
 };
+
+var sortContainersByLoad = function (containers) {
+    return containers.sort((a, b) => a.store[RESOURCE_ENERGY] - b.store[RESOURCE_ENERGY]);
+}
 
 module.exports = roleHarvesterContainer;

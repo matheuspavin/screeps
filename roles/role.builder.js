@@ -1,4 +1,4 @@
-var structures = require('structures');
+var structureService = require('structureService');
 var roleBuilder = {
 
     /** @param {Creep} creep **/
@@ -31,7 +31,7 @@ var roleBuilder = {
 // 	        let container = _.filter(targets, (target) => target.structureType == 'container');
 // 	        if (container.length) {
 // 	             creep.moveTo(container[0], {visualizePathStyle: {stroke: '#e60000'}});
-//                   structures.transferContainerEnergy(container[0], creep);
+//                   structureService.transferContainerEnergy(container[0], creep);
 // 			}else {
     	        var sources = creep.room.find(FIND_SOURCES);
                 if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
