@@ -4,9 +4,12 @@ var roleHarvesterContainer = {
     run: function(creep) {
         
 	    if(creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#009999'}});
+            let sourceToMine = 0;
+            let sources = creep.room.find(FIND_SOURCES);
+            let quantity = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
+            quantity.indexOf(creep) < (quantity.length / 2) ? sourceToMine = 1 : sourceToMine = 0;
+            if(creep.harvest(sources[sourceToMine]) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources[sourceToMine], {visualizePathStyle: {stroke: '#009999'}});
             }
         }
         else {
@@ -15,8 +18,8 @@ var roleHarvesterContainer = {
                 
             if(targets.length > 0) {
                 targets = sortContainersByLoad(targets);
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#009999'}});
+                if(creep.transfer(targets[1], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(targets[1], {visualizePathStyle: {stroke: '#009999'}});
                 }
             }
         }
