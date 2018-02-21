@@ -27,7 +27,7 @@ var roleUpgrader = {
             // filter: (structure) => structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER
             });
             var closestDamagedTower = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-	            filter: (structure) => structure.hits < 100000 && structure.structureType == STRUCTURE_TOWER
+	            filter: (structure) => structure.hits < 3000 && structure.structureType == STRUCTURE_TOWER
             // filter: (structure) => structure.hits < structure.hitsMax && structure.structureType == STRUCTURE_CONTAINER
             });
             if (closestDamagedWall300) {closestDamagedStructure = closestDamagedWall300};

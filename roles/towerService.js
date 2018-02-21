@@ -3,6 +3,8 @@ var towerController =  function(tower) {
         var closestDamagedStructure = tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax
         });
+        
+        // If i go further, i will priorize some structures for repair
         var closestContainerDamaged = tower.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => structure.hits < structure.hitsMax && structure.structureType === STRUCTURE_CONTAINER
         });

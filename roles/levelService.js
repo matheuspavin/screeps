@@ -1,5 +1,4 @@
 var levels = function (lvl) {
-    console.log(lvl)
     const level1 = {
             builders : 5,
             harvesters : 3,

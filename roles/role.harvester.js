@@ -28,6 +28,8 @@ var roleHarvester = {
 	    } else {
 	        let sourceToMine = 0;
             let sources = creep.room.find(FIND_SOURCES);
+            // TODO
+            //This code was duplicated in harvesterContainer, move it to creepServer
             let quantity = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
             quantity.indexOf(creep) < (quantity.length / 2) ? sourceToMine = 1 : sourceToMine = 0;
             if(creep.harvest(sources[sourceToMine]) == ERR_NOT_IN_RANGE) {

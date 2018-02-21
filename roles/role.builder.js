@@ -15,12 +15,18 @@ var roleBuilder = {
 
 	    if(creep.memory.building) {
 	        let targets = creep.room.find(FIND_CONSTRUCTION_SITES);
+	        let wall = _.filter(targets, (target) => target.structureType == 'constructedWall');
 	        let extension = _.filter(targets, (target) => target.structureType == 'extension');
 	        let container = _.filter(targets, (target) => target.structureType == 'container');
+	        let tower = _.filter(targets, (target) => target.structureType == 'tower');
 	        
-	        if (container.length) {
+	         if (wall.length) {
+                buildStructure(wall[0], creep);
+	        }else if (container.length) {
                 buildStructure(container[0], creep);
-            }else if (extension.length) {
+            }else if (tower.length) {
+	           buildStructure(tower[0], creep);
+	        }else if (extension.length) {
 	           buildStructure(extension[0], creep);
 	        }else if(targets.length) {
                 buildStructure(targets[0], creep);
@@ -34,8 +40,8 @@ var roleBuilder = {
 //                   structureService.transferContainerEnergy(container[0], creep);
 // 			}else {
     	        var sources = creep.room.find(FIND_SOURCES);
-                if(creep.harvest(sources[1]) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(sources[1], {visualizePathStyle: {stroke: '#e60000'}});
+                if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#e60000'}});
 				}
 // 			}
 	    }
