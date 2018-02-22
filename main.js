@@ -13,9 +13,10 @@ module.exports.loop = function () {
     
     
     //TODO'S
-    //Think in a way to find the best resource, as opposed to going by the number of the array
     //Make some rules, to the repairer, divide his job, unlike going all the way to the full hits
     //Make the creeps walk in the 'path', after all the roads are done
+    //Make some unity tests
+    
     
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
