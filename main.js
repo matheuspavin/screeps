@@ -13,6 +13,7 @@ module.exports.loop = function () {
     
     
     //TODO'S
+    //Search in all functions, and make they return something meaningful. That's a good practice.
     //Make some rules, to the repairer, divide his job, unlike going all the way to the full hits
     //Make the creeps walk in the 'path', after all the roads are done
     //Make some unity tests
