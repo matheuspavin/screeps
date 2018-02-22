@@ -19,6 +19,7 @@ var createCreeps =  {
         if (!Object.keys(creeps).length) {
             Game.spawns['Spawn1'].spawnCreep( [WORK, CARRY, MOVE], 'Harvester1', { memory: { role: 'harvester', level: 1 } } );
         }
+        //Here i can improve, to start producing creeps before the spawn is full, but for now, its ok!
         if (Game.spawns['Spawn1'].energy >= 300) {!createCreep(creepService.defineCreepToCreate());}
     }
 };
